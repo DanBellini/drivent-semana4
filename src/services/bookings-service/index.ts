@@ -5,23 +5,23 @@ import hotelRepository from "@/repositories/hotel-repository";
 import ticketRepository from "@/repositories/ticket-repository"
 import { Booking } from "@prisma/client";
 
-async function createBooking(userId:number, roomId:number) {
+async function createBooking(userId: number, roomId: number) {
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
-    if(!enrollment){
+    if (!enrollment) {
         throw forbiddenError();
     };
     const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
-    if(ticket.status !== "PAID" || !ticket.TicketType.includesHotel || ticket.TicketType.isRemote){
+    if (ticket.status !== "PAID" || !ticket.TicketType.includesHotel || ticket.TicketType.isRemote) {
         throw forbiddenError();
     };
 
     const roomIdAlreadyExist = await hotelRepository.findRoomByRoomId(roomId);
 
-    if(!roomIdAlreadyExist){
+    if (!roomIdAlreadyExist) {
         throw notFoundError();
     };
 
-    if(roomIdAlreadyExist.Booking.length >= roomIdAlreadyExist.capacity){
+    if (roomIdAlreadyExist.Booking.length >= roomIdAlreadyExist.capacity) {
         throw forbiddenError();
     };
     const booking = await bookingRepository.createBooking(userId, roomIdAlreadyExist.id);
@@ -29,35 +29,37 @@ async function createBooking(userId:number, roomId:number) {
     return booking;
 }
 
-export type CreateBookingParams = Pick<Booking, "roomId" >;
+export type CreateBookingParams = Pick<Booking, "roomId">;
 
-async function getBooking(userId:number) {
+async function getBooking(userId: number) {
     const booking = await bookingRepository.findBookingWithUserId(userId)
 
-    if(!booking){
+    if (!booking) {
         throw notFoundError()
     }
     return booking
 }
 
-async function updateBookingUser(userId:number, bookingId:number, roomId:number) {
-    const userHaveReserve = await bookingRepository.verifyUserReserve(userId)
-    if(!userHaveReserve.Booking){
+async function updateBookingUser(userId: number, bookingId: number, roomId: number) {
+
+    const verifyBookingId = await bookingRepository.verifyBookingId(bookingId)
+    if(!verifyBookingId){
+        throw notFoundError()
+    }
+    if(verifyBookingId.userId !== userId){
         throw forbiddenError()
     }
-    const roomIdAlreadyExist = await hotelRepository.findRoomByRoomId(roomId);
 
-    if(!roomIdAlreadyExist){
+    const roomIdAlreadyExist = await hotelRepository.findRoomByRoomId(roomId);
+    if (!roomIdAlreadyExist) {
         throw notFoundError();
     };
-
-    if(roomIdAlreadyExist.Booking.length >= roomIdAlreadyExist.capacity){
+    if (roomIdAlreadyExist.Booking.length >= roomIdAlreadyExist.capacity) {
         throw forbiddenError();
     };
 
-    const booking = await bookingRepository.updateBookingDateWithBookingId(bookingId, roomId)
-
-    return booking
+    return await bookingRepository.updateBookingDateWithBookingId(bookingId, roomId)
+    
 }
 
 const bookingService = {

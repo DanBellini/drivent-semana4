@@ -1,52 +1,49 @@
 import { prisma } from "@/config";
 
-async function createBooking(userId:number, roomId:number) {
+async function createBooking(userId: number, roomId: number) {
     return await prisma.booking.create({
-        data:{
-            userId:userId,
-            roomId:roomId
+        data: {
+            userId: userId,
+            roomId: roomId
         }
     })
 }
 
-async function findBookingWithUserId(userId:number) {
+async function findBookingWithUserId(userId: number) {
     return await prisma.booking.findFirst({
-        where:{
+        where: {
             userId
         },
-        include:{
+        include: {
             Room: true
         }
     })
 }
 
-async function verifyUserReserve(userId:number) {
-    return await prisma.user.findFirst({
-        where:{
-            id:userId
+async function updateBookingDateWithBookingId(bookingId: number, roomId: number) {
+    return await prisma.booking.update({
+        where: {
+            id: bookingId
         },
-        include:{
-            Booking:true
+        data: {
+            roomId:roomId
         }
     })
 }
 
-async function updateBookingDateWithBookingId(bookingId:number, roomId:number) {
-    return await prisma.booking.update({
+async function verifyBookingId( bookingId:number) {
+    return await prisma.booking.findFirst({
         where:{
-            id:bookingId
+            id:bookingId,
         },
-        data:{
-            roomId
-        }
     })
 }
 
 const bookingRepository = {
     createBooking,
     findBookingWithUserId,
-    verifyUserReserve,
-    updateBookingDateWithBookingId
+    updateBookingDateWithBookingId,
+    verifyBookingId
 }
 
 export default bookingRepository;
