@@ -14,3 +14,12 @@ export async function createManyBookings(roomId:number, userId:number) {
         }]
     })
 }
+
+export async function createBooking(roomId:number, userId:number) {
+    return await prisma.booking.create({
+        data:{
+            userId,
+            roomId
+        }
+    })
+}
