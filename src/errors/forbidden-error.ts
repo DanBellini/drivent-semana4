@@ -5,4 +5,4 @@ export function forbiddenError(): ApplicationError {
     name: "Forbidden",
     message: "No result for this search!",
   };
-}
+};
