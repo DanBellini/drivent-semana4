@@ -31,8 +31,18 @@ async function createBooking(userId:number, roomId:number) {
 
 export type CreateBookingParams = Pick<Booking, "roomId" >;
 
+async function getBooking(userId:number) {
+    const booking = await bookingRepository.findBookingWithUserId(userId)
+
+    if(!booking){
+        throw notFoundError()
+    }
+    return booking
+}
+
 const bookingService = {
-    createBooking
+    createBooking,
+    getBooking
 }
 
 export default bookingService;
