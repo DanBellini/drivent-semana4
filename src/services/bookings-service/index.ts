@@ -40,9 +40,30 @@ async function getBooking(userId:number) {
     return booking
 }
 
+async function updateBookingUser(userId:number, bookingId:number, roomId:number) {
+    const userHaveReserve = await bookingRepository.verifyUserReserve(userId)
+    if(!userHaveReserve.Booking){
+        throw forbiddenError()
+    }
+    const roomIdAlreadyExist = await hotelRepository.findRoomByRoomId(roomId);
+
+    if(!roomIdAlreadyExist){
+        throw notFoundError();
+    };
+
+    if(roomIdAlreadyExist.Booking.length >= roomIdAlreadyExist.capacity){
+        throw forbiddenError();
+    };
+
+    const booking = await bookingRepository.updateBookingDateWithBookingId(bookingId, roomId)
+
+    return booking
+}
+
 const bookingService = {
     createBooking,
-    getBooking
+    getBooking,
+    updateBookingUser
 }
 
 export default bookingService;

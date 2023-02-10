@@ -2,6 +2,7 @@ import { AuthenticatedRequest } from "@/middlewares";
 import { Response } from "express";
 import httpStatus from "http-status";
 import bookingService from "@/services/bookings-service";
+import { number } from "joi";
 
 export async function postBooking(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
@@ -34,6 +35,27 @@ export async function getBooking(req:AuthenticatedRequest, res:Response) {
     } catch(error){
         if (error.name === "NotFoundError") {
             return res.sendStatus(httpStatus.NOT_FOUND);
+        }
+        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+export async function putBooking(req:AuthenticatedRequest, res:Response) {
+    const {userId} = req;
+    const bookingId = Number(req.params.bookingId)
+    
+    const room = req.body.roomId;
+    const roomId = Number(room)
+    try {
+        await bookingService.updateBookingUser(userId, bookingId, roomId)
+
+        return res.sendStatus(httpStatus.OK)
+    } catch (error) {
+        if (error.name === "NotFoundError") {
+            return res.sendStatus(httpStatus.NOT_FOUND);
+        }
+        if(error.name === "Forbidden"){
+            return res.sendStatus(httpStatus.FORBIDDEN)
         }
         return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR)
     }
