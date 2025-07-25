@@ -1,132 +1,151 @@
-# drivent-back
+# drivent-semana4
 
-Back-end for Driven.t, an event management solution.
+## 🚀 Introdução (Português)
 
-:)
+Este projeto foi desenvolvido durante a Semana 4 do bootcamp **Driven**, como parte do processo de aprendizado em desenvolvimento Full Stack. O objetivo principal é consolidar conhecimentos adquiridos em Node.js, Express, PostgreSQL, TypeScript e boas práticas para APIs REST.
 
-## About
+## 📝 Sobre o Projeto
 
-Driven.t is a web browser application with which you can manage every single aspect of your event.
+O **drivent-semana4** é uma aplicação Back-End que implementa funcionalidades típicas de um sistema de eventos, como cadastro de usuários, gerenciamento de inscrições e organização de atividades. Foi projetado para servir de base para estudos e aprimoramento técnico.
 
-## How to run for development
+## 🔧 Tecnologias Utilizadas
 
-1. Clone this repository
-2. Install all dependencies
+- Node.js
+- Express
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- Dotenv
 
-```bash
-npm i
-```
+## 📦 Como Executar o Projeto
 
-3. Create a PostgreSQL database with whatever name you want
-4. Configure the `.env.development` file using the `.env.example` file (see "Running application locally or inside docker section" for details)
-5. Run all migrations
+Siga os passos abaixo para rodar o projeto em ambiente de desenvolvimento:
 
-```bash
-npm run migration:run
-```
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/DanBellini/drivent-semana4.git
+   ```
 
-6. Seed db
+2. **Acesse o diretório do projeto:**
+   ```bash
+   cd drivent-semana4
+   ```
 
-```bash
-npm run dev:seed
-```
+3. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-6. Run the back-end in a development environment:
+4. **Configure as variáveis de ambiente:**  
+   - Crie um arquivo `.env` baseado no `.env.example` e preencha com suas configurações de banco de dados.
 
-```bash
-npm run dev
-```
+5. **Execute as migrações do banco de dados:**
+   ```bash
+   npx prisma migrate dev
+   ```
 
-## How to run tests
+6. **Popule o banco de dados com dados iniciais (opcional):**
+   ```bash
+   npm run prisma:seed
+   ```
 
-1. Follow the steps in the last section
-1. Configure the `.env.test` file using the `.env.example` file (see "Running application locally or inside docker" section for details)
-1. Run all migrations
+7. **Inicie a aplicação:**
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm run migration:run
-```
+8. **Utilize um cliente HTTP (Thunder Client, Insomnia, Postman, etc.) para testar as rotas e funcionalidades.**
 
-3. Run test:
-   (locally)
+## 🎯 Funcionalidades Principais
 
-```bash
-npm run test
-```
+- Cadastro e autenticação de usuários
+- Gerenciamento de inscrições em eventos
+- Organização e consulta de atividades
+- Estrutura modular para fácil expansão
 
-(docker)
+## 💡 Contribuição
 
-```bash
-npm run test:docker
-```
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues, sugerir melhorias ou enviar pull requests.
 
-## Building and starting for production
+## 👤 Autor
 
-```bash
-npm run build
-npm start
-```
+- [DanBellini](https://github.com/DanBellini)
 
-## Running migrations or generate prisma clients
+---
 
-Before running migrations make sure you have a postgres db running based on `.env.development` or `.env.test` file for each environment. You can start a postgres instance by typing `npm run dev:postgres` or `npm run test:postgres`. The host name is the name of the postgres container inside docker-compose file if you are running the application inside a docker container or localhost if you are running it locally.
+---
 
-You can operate on databases for different environments, but it is necessary to populate correct env variables for each environment first, so in order to perform db operations type the following commands:
+# drivent-semana4
 
-- `npm run dev:migration:run` - run migrations for development environment by loading envs from .env.development file. It uses [dotenv-cli](https://github.com/entropitor/dotenv-cli#readme) to load envs from .env.development file.
-- `npm run test:migration:run` - the same, but for test environment
+## 🚀 Introduction (English)
 
-- `npm run dev:migration:generate -- --name ATOMIC_OPERATION_NAME` - generate and run migration and prisma client for development environment by loading envs from .env.development file. Replace `ATOMIC_OPERATION_NAME` by the name of the migration you want to generate.
+This project was developed during Week 4 of the **Driven** bootcamp, as part of the learning process in Full Stack development. The main goal is to consolidate knowledge acquired in Node.js, Express, PostgreSQL, TypeScript, and REST API best practices.
 
-## Switching between environments
+## 📝 About the Project
 
-In order to switch between development and test environments you need to shutdown the current postgres instance if it is running and start the new one.
+**drivent-semana4** is a Back-End application that implements typical features of an event management system, such as user registration, enrollment management, and activity organization. It was designed to serve as a foundation for studies and technical improvement.
 
-If you are in development environment:
+## 🔧 Technologies Used
 
-```bash
-npm run dev:postgres:down
-```
+- Node.js
+- Express
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- Dotenv
 
-And then
+## 📦 How to Run the Project
 
-```bash
-npm run test:postgres
-```
+Follow the steps below to run the project in a development environment:
 
-If you are in test environment:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/DanBellini/drivent-semana4.git
+   ```
 
-```bash
-npm run test:postgres:down
-```
+2. **Access the project directory:**
+   ```bash
+   cd drivent-semana4
+   ```
 
-And then
+3. **Install the dependencies:**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev:postgres
-```
+4. **Configure environment variables:**  
+   - Create a `.env` file based on `.env.example` and fill in your database configuration.
 
-## Running application locally or inside docker
+5. **Run database migrations:**
+   ```bash
+   npx prisma migrate dev
+   ```
 
-`.env.development` and `.env.test` must be changed if you and to run the application locally or inside docker. You can populate files based on `.env.example` file, but you need to consider the following:
+6. **Seed the database with initial data (optional):**
+   ```bash
+   npm run prisma:seed
+   ```
 
-- Running application locally (postgres and node):
+7. **Start the application:**
+   ```bash
+   npm run dev
+   ```
 
-Add your postgres credentials and make sure to create given database before running the application.
+8. **Use an HTTP client (Thunder Client, Insomnia, Postman, etc.) to test routes and features.**
 
-- Running application inside docker (postgres and node):
+## 🎯 Main Features
 
-Set `POSTGRES_HOST` to `drivent-postgres-development` for `.env.development` and `drivent-postgres-test` for `.env.test` file. It is the name of the postgres container inside docker-compose file. Docker Compose will start the postgres container for you, create the database and host alias for you.
+- User registration and authentication
+- Event enrollment management
+- Activity organization and query
+- Modular structure for easy expansion
 
-- Running application locally (node) but postgres is running inside docker:
+## 💡 Contribution
 
-Set `POSTGRES_HOST` to `localhost` for `.env.development` and `localhost` for `.env.test` file. Docker compose is configured to expose postgres container to your localhost.
+Contributions are welcome! Feel free to open issues, suggest improvements, or submit pull requests.
 
-## What to do when add new ENV VARIABLES
+## 👤 Author
 
-There are several things you need to do when you add new ENV VARIABLES:
-- Add them to `.env.example` file
-- Add them to your local `.env.development` and `.env.test` files
-- Add them to your docker-compose.yml file (just the name, not the value). Only envs listed in the environment section will be exposed to your docker container.
-- Add them (prod version) to your github repo secrets. They will be used to generate the `.env` file on deploy.
-- Add them (prod version) to test.yml file on .github/workflows/test.yml.
+- [DanBellini](https://github.com/DanBellini)
+
+---
